@@ -262,9 +262,40 @@ void MyImage::flipVertical() {
 }
 void MyImage::advancedFeature1() {
     cout << "Advanced Feature 1" << endl;
+    int w = (int)this->size.x;
+    int h = (int)this->size.y;
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w / 2; ++x) {
+            int top    = y * w + x;
+            int right = y * w + (w - 1 - x);
+
+            RGB temp = pixels[top];
+            pixels[right] = temp;
+        }
+    }
 }
 void MyImage::advancedFeature2() {
     cout << "Advanced Feature 2" << endl;
+
+    int w = (int)this->size.x;
+    int h = (int)this->size.y;
+
+    for (int y = 0; y < h; ++y) {
+        for (int x = 0; x < w / 2; ++x) {
+            int top    = y * w + x;
+            int right = y * w + (w - 1 - x);
+            int bottom = (h - 1 - y) * w + x;
+            int left = y * w + x;
+
+            RGB temp = pixels[top];
+            //pixels[left] = pixels[right];
+            pixels[right] = temp;
+            //RGB temp2 = pixels[bottom];
+            //pixels[bottom] = pixels[top];
+            //pixels[left] = temp2;
+        }
+    }
 }
 void MyImage::advancedFeature3() {
     cout << "Advanced Feature 3" << endl;
