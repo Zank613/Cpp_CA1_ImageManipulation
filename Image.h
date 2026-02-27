@@ -41,7 +41,12 @@ public:
     void flipHorizontal();
     void flipVertical();
     void advancedFeature1();
-    void advancedFeature2();
+
+    /**
+     * Uses mouse input for creating a rectangle to crop a part of the image
+     * @param window Pass reference of sf::RenderWindow
+     */
+    void advancedFeature2(sf::RenderWindow& window);
     void advancedFeature3();
     void reload();
     void filterRed();

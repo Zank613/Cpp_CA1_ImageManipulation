@@ -13,15 +13,12 @@ void loadImages(vector<MyImage*> &images);
 const int imgW = 640, imgH = 450;
 int main()
 {
-
     int selectedImage = 0;
     vector<MyImage*> images;
     loadImages(images);
-    RenderWindow window(VideoMode(Vector2u(1000, 800)), "C++ CA");
+    RenderWindow window(VideoMode(Vector2u(1000, 800)), "C++ CA ATAERK YILDIRIM - JOSEPH DODD");
     CircleShape shape(100.f);
     MyImage *img = new MyImage("../Images/boxes_1.ppm");
-
-
 
     Font font("../ARIAL.TTF");
 
@@ -33,12 +30,11 @@ int main()
     buttons.push_back(new Button(font, {660, 180}, {120, 30}, "Grey Scale", [&images, &selectedImage](){images[selectedImage]->greyScale();}));
     buttons.push_back(new Button(font, {660, 220}, {120, 30}, "Flip Horizontal", [&images, &selectedImage](){images[selectedImage]->flipHorizontal();}));
     buttons.push_back(new Button(font, {660, 260}, {120, 30}, "Flip Vertical", [&images, &selectedImage](){images[selectedImage]->flipVertical();}));
-    buttons.push_back(new Button(font, {660, 300}, {120, 30}, "Advanced Feature 1", [&images, &selectedImage](){images[selectedImage]->advancedFeature1();}));
-    buttons.push_back(new Button(font, {660, 340}, {120, 30}, "Advanced Feature 2", [&images, &selectedImage](){images[selectedImage]->advancedFeature2();}));
+    buttons.push_back(new Button(font, {660, 300}, {120, 30}, "Mirror Image", [&images, &selectedImage](){images[selectedImage]->advancedFeature1();}));
+    buttons.push_back(new Button(font, {660, 340}, {120, 30}, "Crop Image", [&images, &selectedImage, &window](){images[selectedImage]->advancedFeature2(window);}));
     buttons.push_back(new Button(font, {660, 380}, {120, 30}, "Advanced Feature 3", [&images, &selectedImage](){images[selectedImage]->advancedFeature3();}));
     buttons.push_back(new Button(font, {660, 420}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
     buttons.push_back(new Button(font, {660, 420}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
-
 
     buttons.push_back(new Button(font, {190, imgH+30}, {120, 30}, "<", [&images, &selectedImage](){if (selectedImage > 0) selectedImage--;}));
     buttons.push_back(new Button(font, {330, imgH+30}, {120, 30}, ">", [&images, &selectedImage]() {
@@ -63,9 +59,7 @@ int main()
                         btn->click();
                     }
                 }
-
             }
-
         }
         window.clear();
 
@@ -73,6 +67,7 @@ int main()
         for (Button *btn: buttons) {
             window.draw(*btn);
         }
+
         window.display();
     }
 
@@ -81,7 +76,6 @@ int main()
 
 void loadImages(vector<MyImage*> &images) {
     namespace stdfs = std::filesystem ;
-
 
     // http://en.cppreference.com/w/cpp/experimental/fs/directory_iterator
     const stdfs::directory_iterator end{} ;
@@ -100,6 +94,4 @@ void loadImages(vector<MyImage*> &images) {
             }
         }
     }
-
-
 }
