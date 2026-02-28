@@ -32,9 +32,10 @@ int main()
     buttons.push_back(new Button(font, {660, 260}, {120, 30}, "Flip Vertical", [&images, &selectedImage](){images[selectedImage]->flipVertical();}));
     buttons.push_back(new Button(font, {660, 300}, {120, 30}, "Mirror Image", [&images, &selectedImage](){images[selectedImage]->advancedFeature1();}));
     buttons.push_back(new Button(font, {660, 340}, {120, 30}, "Crop Image", [&images, &selectedImage, &window](){images[selectedImage]->advancedFeature2(window);}));
-    buttons.push_back(new Button(font, {660, 380}, {120, 30}, "Advanced Feature 3", [&images, &selectedImage](){images[selectedImage]->advancedFeature3();}));
-    buttons.push_back(new Button(font, {660, 420}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
-    buttons.push_back(new Button(font, {660, 420}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
+    buttons.push_back(new Button(font, {660, 380}, {120, 30}, "Brightness + 10", [&images, &selectedImage](){images[selectedImage]->advancedFeature3();}));
+    buttons.push_back(new Button(font, {660, 420}, {120, 30}, "Brightness - 10", [&images, &selectedImage](){images[selectedImage]->advancedFeature3(-15);})); // -15 to scale cleanly alongside default parameter
+    buttons.push_back(new Button(font, {660, 460}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
+    buttons.push_back(new Button(font, {660, 460}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
 
     buttons.push_back(new Button(font, {190, imgH+30}, {120, 30}, "<", [&images, &selectedImage](){if (selectedImage > 0) selectedImage--;}));
     buttons.push_back(new Button(font, {330, imgH+30}, {120, 30}, ">", [&images, &selectedImage]() {

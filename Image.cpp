@@ -297,6 +297,7 @@ void MyImage::advancedFeature2(sf::RenderWindow &window) {
 
     while (!done) {
 
+        // https://www.sfml-dev.org/documentation/3.0.2/namespacesf_1_1Mouse.html
         bool leftDown = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
         sf::Vector2i mp = sf::Mouse::getPosition(window);
         sf::Vector2f mousePos((float)mp.x, (float)mp.y);
@@ -324,11 +325,13 @@ void MyImage::advancedFeature2(sf::RenderWindow &window) {
         if (leftDown && dragging) {
             dragNow = mousePos;
 
+            // https://en.cppreference.com/w/cpp/algorithm/min.html
             sf::Vector2f topLeft(
                 std::min(dragStart.x, dragNow.x),
                 std::min(dragStart.y, dragNow.y)
             );
 
+            // https://en.cppreference.com/w/cpp/numeric/math/abs
             sf::Vector2f size(
                 std::abs(dragNow.x - dragStart.x),
                 std::abs(dragNow.y - dragStart.y)
@@ -418,6 +421,27 @@ void MyImage::advancedFeature2(sf::RenderWindow &window) {
         window.display();
     }
 }
-void MyImage::advancedFeature3() {
-    cout << "Advanced Feature 3" << endl;
+void MyImage::advancedFeature3(int value) {
+    cout << "Advanced Feature 3 - Brightness Change" << endl;
+
+    int percent = (value * 100) / 255; // integer percent
+    cout << "Brightness change: " << percent << "% (change " << value << ")\n";
+
+    for (RGB& p : pixels) {
+        int r = p.r + value;
+        int g = p.g + value;
+        int b = p.b + value;
+
+        if (r > 255) r = 255;
+        if (g > 255) g = 255;
+        if (b > 255) b = 255;
+
+        if (r < 0) r = 0;
+        if (g < 0) g = 0;
+        if (b < 0) b = 0;
+
+        p.r = r;
+        p.g = g;
+        p.b = b;
+    }
 }

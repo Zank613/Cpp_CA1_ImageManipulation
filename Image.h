@@ -43,11 +43,17 @@ public:
     void advancedFeature1();
 
     /**
-     * Uses mouse input for creating a rectangle to crop a part of the image
+     * @brief Uses mouse input for creating a rectangle to crop a part of the image.
      * @param window Pass reference of sf::RenderWindow
      */
     void advancedFeature2(sf::RenderWindow& window);
-    void advancedFeature3();
+
+    /**
+     * @brief Increases or decreases brightness.
+     * @param value int value for adjusting brightness. Use Positive for adding. Negative for subtracting.
+     * Default is set to 10.
+     */
+    void advancedFeature3(int value = 15);
     void reload();
     void filterRed();
     void filterGreen();
