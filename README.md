@@ -16,9 +16,10 @@ This is the code repository for the CA1 in the C++ module.
 - Mirror Image
 - Flip Vertically and Horizontally
 - Crop Image
+- Brightness Changer
 
 ## Advanced Features to Add:
 
 - [ ] Bilinear Upscaling - Ataerk Yıldırım
-- [ ] Brightness & Contrast Slider - Ataerk Yıldırım
+- [x] Brightness ~~& Contrast Slider~~ Changer - Ataerk Yıldırım
 - [ ] Something something - Joseph Dodd
