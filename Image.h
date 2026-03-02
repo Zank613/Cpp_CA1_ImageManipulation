@@ -54,6 +54,7 @@ public:
      * Default is set to 10.
      */
     void advancedFeature3(int value = 15);
+    void advancedFeature4();
     void reload();
     void filterRed();
     void filterGreen();

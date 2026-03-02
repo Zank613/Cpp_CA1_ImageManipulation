@@ -445,3 +445,28 @@ void MyImage::advancedFeature3(int value) {
         p.b = b;
     }
 }
+
+void MyImage::advancedFeature4() {
+    cout << "Advanced Feature 4 - Grid" << endl;
+    int w = (int)this->size.x;
+    int h = (int)this->size.y;
+
+    for (int y = 0; y < h / 2; ++y) {
+        for (int x = 0; x < w / 2; ++x) {
+            pixels[y * w + x].r = 0;
+            pixels[y * w + x].g = 0;
+        }
+    }
+    for (int y = 0; y < h / 2; ++y) {
+        for (int x = w / 2; x < w; ++x) {
+            pixels[y * w + x].b = 0;
+            pixels[y * w + x].r = 0;
+        }
+    }
+    for (int y = h / 2; y < h; ++y) {
+        for (int x = 0; x < w / 2; ++x) {
+            pixels[y * w + x].g = 0;
+            pixels[y * w + x].b = 0;
+        }
+    }
+}

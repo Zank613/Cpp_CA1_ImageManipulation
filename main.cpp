@@ -34,8 +34,9 @@ int main()
     buttons.push_back(new Button(font, {660, 340}, {120, 30}, "Crop Image", [&images, &selectedImage, &window](){images[selectedImage]->advancedFeature2(window);}));
     buttons.push_back(new Button(font, {660, 380}, {120, 30}, "Brightness + 10", [&images, &selectedImage](){images[selectedImage]->advancedFeature3();}));
     buttons.push_back(new Button(font, {660, 420}, {120, 30}, "Brightness - 10", [&images, &selectedImage](){images[selectedImage]->advancedFeature3(-15);})); // -15 to scale cleanly alongside default parameter
-    buttons.push_back(new Button(font, {660, 460}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
-    buttons.push_back(new Button(font, {660, 460}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
+    buttons.push_back(new Button(font, {660, 460}, {120, 30}, "Colour Grid", [&images, &selectedImage](){images[selectedImage]->advancedFeature4();}));
+    buttons.push_back(new Button(font, {660, 500}, {120, 30}, "Save", [&images, &selectedImage](){images[selectedImage]->save();}));
+
 
     buttons.push_back(new Button(font, {190, imgH+30}, {120, 30}, "<", [&images, &selectedImage](){if (selectedImage > 0) selectedImage--;}));
     buttons.push_back(new Button(font, {330, imgH+30}, {120, 30}, ">", [&images, &selectedImage]() {
