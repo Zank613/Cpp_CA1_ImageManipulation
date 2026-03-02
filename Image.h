@@ -54,6 +54,10 @@ public:
      * Default is set to 10.
      */
     void advancedFeature3(int value = 15);
+
+    /**
+     * @brief Divides the image into 4 equal parts and filters them in different colours.
+     */
     void advancedFeature4();
     void reload();
     void filterRed();
