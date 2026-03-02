@@ -469,4 +469,18 @@ void MyImage::advancedFeature4() {
             pixels[y * w + x].b = 0;
         }
     }
+    /*for (RGB & pixel : pixels) {
+        unsigned char P = (pixel.r + pixel.g + pixel.b) / 3;
+        pixel.r = P;
+        pixel.g = P;
+        pixel.b = P;
+    }*/
+    for (int y = h / 2; y < h; ++y) {
+        for (int x = w / 2; x < w; ++x) {
+            unsigned char P = (pixels[y * w + x].r + pixels[y * w + x].g + pixels[y * w + x].b) / 3;
+            pixels[y * w + x].r = P;
+            pixels[y * w + x].g = P;
+            pixels[y * w + x].b = P;
+        }
+    }
 }
