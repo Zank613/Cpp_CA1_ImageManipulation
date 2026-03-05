@@ -282,14 +282,17 @@ void MyImage::advancedFeature1() {
 void MyImage::advancedFeature2(sf::RenderWindow &window) {
     std::cout << "Advanced Feature 2 - Cropping Image" << std::endl;
 
+    // These flags control the cropping interaction logic
     bool dragging = false;
     bool wasDown = false;
     bool readyToCrop = false;
     bool done = false;
 
+    // Stores the position where dragging starts and the current drag position
     sf::Vector2f dragStart;
     sf::Vector2f dragNow;
 
+    // Rectangle used to visually show the selected crop region
     sf::RectangleShape rect;
     rect.setFillColor(sf::Color(80, 160, 255, 60));
     rect.setOutlineColor(sf::Color(80, 160, 255, 220));
@@ -299,125 +302,159 @@ void MyImage::advancedFeature2(sf::RenderWindow &window) {
 
         // https://www.sfml-dev.org/documentation/3.0.2/namespacesf_1_1Mouse.html
         bool leftDown = sf::Mouse::isButtonPressed(sf::Mouse::Button::Left);
+
+        // Get mouse position relative to the window
         sf::Vector2i mp = sf::Mouse::getPosition(window);
+
+        // Convert mouse position to floating point vector
         sf::Vector2f mousePos((float)mp.x, (float)mp.y);
 
-        // Wait for the user to release the click that pressed the button
+        // Prevent cropping from starting if the mouse button was already held
+        // when this function started
         if (!readyToCrop) {
             if (!leftDown) readyToCrop = true;
 
+            // Store mouse state for next frame
             wasDown = leftDown;
 
+            // Draw the image normally while waiting
             window.clear();
             window.draw(*this);
             window.display();
             continue;
         }
 
-        // Just pressed -> start dragging
+        // Detect a fresh mouse press (button down now but not in previous frame)
         if (leftDown && !wasDown) {
             dragging = true;
+
+            // Record the start position of the drag
             dragStart = mousePos;
+
+            // Initialize current drag position
             dragNow = mousePos;
         }
 
-        // While holding -> update selection rectangle
+        // While dragging and mouse still held down
         if (leftDown && dragging) {
+            // Update current drag position
             dragNow = mousePos;
 
             // https://en.cppreference.com/w/cpp/algorithm/min.html
+            // Determine the top-left corner of the rectangle
+            // using min so dragging works in any direction
             sf::Vector2f topLeft(
                 std::min(dragStart.x, dragNow.x),
                 std::min(dragStart.y, dragNow.y)
             );
 
             // https://en.cppreference.com/w/cpp/numeric/math/abs
+            // Calculate width and height of the selection rectangle
             sf::Vector2f size(
                 std::abs(dragNow.x - dragStart.x),
                 std::abs(dragNow.y - dragStart.y)
             );
 
+            // Update rectangle position and size
             rect.setPosition(topLeft);
             rect.setSize(size);
         }
 
-        // Just released -> crop and finish
+        // Detect mouse release (button up now but was down last frame)
         if (!leftDown && wasDown && dragging) {
             dragging = false;
 
+            // Get crop rectangle boundaries in screen coordinates
             float screenX1 = rect.getPosition().x;
             float screenY1 = rect.getPosition().y;
             float screenX2 = screenX1 + rect.getSize().x;
             float screenY2 = screenY1 + rect.getSize().y;
 
+            // Get the image drawing position and size on screen
             float drawLeft   = this->position.x;
             float drawTop    = this->position.y;
             float drawWidth  = this->targetSize.x;
             float drawHeight = this->targetSize.y;
 
-            // Convert screen -> ratios
+            // Convert screen coordinates into normalized ratios
+            // relative to where the image is drawn
             float rx1 = (screenX1 - drawLeft) / drawWidth;
             float ry1 = (screenY1 - drawTop)  / drawHeight;
             float rx2 = (screenX2 - drawLeft) / drawWidth;
             float ry2 = (screenY2 - drawTop)  / drawHeight;
 
-            // Convert ratios -> image pixels
+            // Convert normalized ratios into actual image pixel coordinates
             int imgX1 = (int)(rx1 * this->size.x);
             int imgY1 = (int)(ry1 * this->size.y);
             int imgX2 = (int)(rx2 * this->size.x);
             int imgY2 = (int)(ry2 * this->size.y);
 
-            // Put to the image bounds
+            // Clamp coordinates so they stay inside image boundaries
             imgX1 = std::max(0, std::min((int)this->size.x, imgX1));
             imgY1 = std::max(0, std::min((int)this->size.y, imgY1));
             imgX2 = std::max(0, std::min((int)this->size.x, imgX2));
             imgY2 = std::max(0, std::min((int)this->size.y, imgY2));
 
-            // Ensure correct ordering
+            // Ensure coordinates are ordered correctly
             if (imgX2 < imgX1) std::swap(imgX1, imgX2);
             if (imgY2 < imgY1) std::swap(imgY1, imgY2);
 
+            // Calculate new cropped image dimensions
             int newW = imgX2 - imgX1;
             int newH = imgY2 - imgY1;
 
+            // If crop area is invalid, stop cropping
             if (newW <= 0 || newH <= 0) {
                 std::cout << "Invalid crop area.\n";
                 done = true;
                 continue;
             }
 
-            // Copy pixels into a new Vector
+            // Create a new pixel vector for the cropped image
             std::vector<RGB> newPixels;
             newPixels.reserve(newW * newH);
 
+            // Store the original image width
             int oldW = (int)this->size.x;
 
+            // Copy pixels from the selected region
             for (int y = 0; y < newH; ++y) {
                 for (int x = 0; x < newW; ++x) {
+
+                    // Convert 2D coordinate into 1D index
                     int oldIndex = (imgY1 + y) * oldW + (imgX1 + x);
+
+                    // Add the pixel to the new image
                     newPixels.push_back(this->pixels[oldIndex]);
                 }
             }
 
-            // Replace image data + update size
+            // Replace old pixel data with the cropped pixel data
             this->pixels = newPixels;
+
+            // Update image dimensions
             this->size.x = (float)newW;
             this->size.y = (float)newH;
 
             std::cout << "Cropped image to: " << newW << " x " << newH << std::endl;
             std::cout << "Cropping done." << std::endl;
 
+            // End cropping loop
             done = true;
         }
 
+        // Update previous mouse state
         wasDown = leftDown;
 
+        // Render the image
         window.clear();
         window.draw(*this);
 
+        // Draw the crop selection rectangle while dragging
         if (dragging)
             window.draw(rect);
 
+        // Display the frame
         window.display();
     }
 }
